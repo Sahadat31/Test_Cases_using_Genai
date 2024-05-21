@@ -21,7 +21,7 @@ def invoke_chain(code):
 
     # section for generating automation test
     test_prompt = PromptTemplate.from_template("""You are an expert automation tester.
-                                            Your job is to write the junit test cases for the below java code.\n
+                                            Your job is to write the junit test cases for the below code.\n
                                             Code: {code} \nAnswer:
                                         """)
     
@@ -29,9 +29,9 @@ def invoke_chain(code):
     test_response = test_chain.invoke({"code": code})
     # section for generating test coverage
     coverage_prompt = PromptTemplate.from_template("""
-                                            You are an expert in Java testing frameworks.
-                                            Execute the junit test cases with respect to the below java code using a standard test coverage framework.
-                                            Based on this create a industry standard test coverage report using that test coverage framework.\n
+                                            You are an expert in testing frameworks.
+                                            Execute the test cases with respect to the below code using a standard test coverage framework suitable for this programming language.
+                                            Based on this create a short and concise test coverage report using that test coverage framework.\n
                                             Code: {code}\n
                                             Test cases: {test} \nAnswer:
                                         """)
@@ -55,7 +55,7 @@ def invoke_chain(code):
     # if coverage is not 100%
     if coverage_response["coverage_analysis"]!="100":
         regenerate_prompt = PromptTemplate.from_template("""
-                                            The below junit test cases have failed to cover the below java code.
+                                            The below test cases have failed to cover the below code.
                                             Your job is to analysis the coverage report and generate more accurate test cases along with original one to increase the coverage percentage to 100.\n
                                                          
                                             Code: {code}\n
